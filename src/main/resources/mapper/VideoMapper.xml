@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.work.springbootinit.mapper.VideoMapper">
+
+
+    <select id="selectTitleList" resultType="com.work.springbootinit.model.dto.video.VideoTitleDto">
+        select bvid, title
+        from video
+        where is_delete = 0
+    </select>
+    <select id="selectTitleListByPage" resultType="com.work.springbootinit.model.dto.video.VideoTitleDto"></select>
+</mapper>
