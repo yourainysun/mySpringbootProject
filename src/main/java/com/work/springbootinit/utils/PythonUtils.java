@@ -23,7 +23,7 @@ import java.util.Arrays;
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 @Component
 public class PythonUtils implements InitializingBean {
-    @Value("")
+    @Value("E:\\PYTHON\\file\\myPythonProject\\mytest\\sentenceTransformer")
     private String pythonUrlTmp;
 
     @Value("${pythonWebUrl:}")
@@ -73,11 +73,11 @@ public class PythonUtils implements InitializingBean {
      * @param pythonParam
      * @return
      */
-    public static String executePythonWeb(String functionNo, String pythonParam) throws IOException{
+    public static String executePythonWeb(String functionNo, String[] pythonParam) throws IOException{
         return executePythonWeb(pythonWebUrl, functionNo, pythonParam);
     }
 
-    public static String executePython(String functionNo, String pythonParam) throws IOException {
+    public static String executePython(String functionNo, String[] pythonParam) throws IOException {
         return executePython(pythonUrl, functionNo, pythonParam);
     }
 
@@ -91,13 +91,16 @@ public class PythonUtils implements InitializingBean {
      * @return
      * @throws IOException
      */
-    public static String executePython(String pythonUrl, String functionNo, String pythonParam) throws IOException{
+    public static String executePython(String pythonUrl, String functionNo, String[] pythonParam) throws IOException{
         String url = pythonUrl + functionNo;
         if(!pythonUrl.endsWith("/") && !functionNo.startsWith("/")){
             url = pythonUrl + "/" + functionNo;
         }
+        String[] args = new String[pythonParam.length + 2];
+        args[0] = "python";
+        args[1] = url;
+        System.arraycopy(pythonParam, 0, args, 2, pythonParam.length);
 
-        String[] args = new String[]{"python", url, pythonParam};
         log.info("--------------------------executePython pythonUrl:["
         + url + "]--------------------------");
 
@@ -122,7 +125,7 @@ public class PythonUtils implements InitializingBean {
      * web接口调用python
      *
      */
-    public static String executePythonWeb(String pythonWebUrl, String functionNo, String pythonParam) throws IOException{
+    public static String executePythonWeb(String pythonWebUrl, String functionNo, String[] pythonParam) throws IOException{
         if(StrUtil.isBlank(pythonWebUrl)){
             return executePython(functionNo, pythonParam);
         }
@@ -136,7 +139,7 @@ public class PythonUtils implements InitializingBean {
         }
         log.info("-----------------------executePython pythonUrl:[" + url + "]---------------------");
         log.info("--------------------executePython pythonParam:[" + pythonParam + "]-------------------------------");
-        String r = HttpUtil.post(url, pythonParam);
+        String r = HttpUtil.post(url, pythonParam[0]);
         if (StrUtil.isEmpty(r)){
             throw new RuntimeException(
                     "executePython pythonUrl:[" + url + "];"
