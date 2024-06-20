@@ -34,7 +34,12 @@ import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import java.io.File;
 
-
+/**
+ * 帖子接口
+ *
+ * @author <a href="https://github.com/liyupi">程序员鱼皮</a>
+ * @from <a href="https://yupi.icu">编程导航知识星球</a>
+ */
 @RestController
 @RequestMapping("/chart")
 @Slf4j
@@ -60,9 +65,14 @@ public class ChartController {
         ThrowUtils.throwIf(StringUtils.isNotBlank(name) && name.length() > 100, ErrorCode.PARAMS_ERROR, "名称过长");
 
         String result = ExcelUtils.excelToCsv(multipartFile);
+        StringBuilder stringBuilder = new StringBuilder();
+        stringBuilder.append("你是一个数据分析师，我会给你我的分析目标和原始数据，请告诉我分析结论。").append('\n');
+//        stringBuilder.append("分析下列数据用户的特点").append('\n');
+        stringBuilder.append("目标数据为:").append('\n');
+        stringBuilder.append(result);
+        return ResultUtils.success(result);
 
-
-        //User loginUser = userService.getLoginUser(request);
+//        User loginUser = userService.getLoginUser(request);
 //        // 文件目录：根据业务、用户来划分
 //        String uuid = RandomStringUtils.randomAlphanumeric(8);
 //        String filename = uuid + "-" + multipartFile.getOriginalFilename();
@@ -85,7 +95,6 @@ public class ChartController {
 //                }
 //            }
 //        }
-        return ResultUtils.success(result);
     }
     /**
      * 创建

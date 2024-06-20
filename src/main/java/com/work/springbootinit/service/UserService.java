@@ -6,15 +6,16 @@ import com.work.springbootinit.model.dto.user.UserQueryRequest;
 import com.work.springbootinit.model.entity.User;
 import com.work.springbootinit.model.vo.LoginUserVO;
 import com.work.springbootinit.model.vo.UserVO;
-import org.springframework.stereotype.Service;
 
 import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 
 /**
  * 用户服务
+ *
+ * @author <a href="https://github.com/liyupi">程序员鱼皮</a>
+ * @from <a href="https://yupi.icu">编程导航知识星球</a>
  */
-
 public interface UserService extends IService<User> {
 
     /**
@@ -110,5 +111,4 @@ public interface UserService extends IService<User> {
      */
     QueryWrapper<User> getQueryWrapper(UserQueryRequest userQueryRequest);
 
-    String getTestResult();
 }

@@ -6,6 +6,8 @@ import com.work.springbootinit.common.DeleteRequest;
 import com.work.springbootinit.common.ErrorCode;
 import com.work.springbootinit.common.ResultUtils;
 //import com.work.springbootinit.config.WxOpenConfig;
+import com.work.springbootinit.model.dto.UserBaseInfoDto;
+import com.work.springbootinit.model.entity.PageRequest;
 import com.work.springbootinit.model.vo.LoginUserVO;
 import com.work.springbootinit.model.vo.UserVO;
 import com.work.springbootinit.annotation.AuthCheck;
@@ -36,6 +38,9 @@ import org.springframework.web.bind.annotation.RestController;
 
 /**
  * 用户接口
+ *
+ * @author <a href="https://github.com/liyupi">程序员鱼皮</a>
+ * @from <a href="https://yupi.icu">编程导航知识星球</a>
  */
 @RestController
 @RequestMapping("/user")
@@ -49,10 +54,20 @@ public class UserController {
 //    private WxOpenConfig wxOpenConfig;
 
     // region 登录相关
+
     @PostMapping("/test")
-    public BaseResponse<String> test() {
-        return ResultUtils.success(userService.getTestResult());
+    public BaseResponse<PageRequest> test(@RequestBody UserBaseInfoDto userBaseInfoDto){
+        System.out.println(userBaseInfoDto.getPageInfo());
+        log.info("分页条件：{}",userBaseInfoDto.getPageInfo());
+        log.info("页大小{}", userBaseInfoDto.getPageInfo().getPageSize());
+        log.info("页数{}",userBaseInfoDto.getPageInfo().getPageNum());
+//        return ResultUtils.success(new Object(){
+//            long pageNum = userBaseInfoDto.getPageInfo().getPageNum();
+//            long pageSize = userBaseInfoDto.getPageInfo().getPageSize();});
+        return  ResultUtils.success(userBaseInfoDto.getPageInfo());
     }
+
+
     /**
      * 用户注册
      *

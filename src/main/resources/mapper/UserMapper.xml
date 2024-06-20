@@ -21,14 +21,44 @@
         userName,userAvatar,userRole,
         createTime,updateTime,isDelete
     </sql>
-    <select id="getTestResult" resultType="java.lang.String">
-        <if test="_databaseId == 'mysql'">
-            select userName from user;
-        </if>
-        <if test="_databaseId == 'oracle'">
-            select userAcount from user;
-        </if>
-    </select>
+    <insert id="insertUserListByMap">
+        insert into user(userAccount, userPassword)
+        values
+        <foreach collection="list" item="user" separator=",">
+            (
+             <foreach collection="user" index="index" item="value">
+                #{index}, #{value}
+             </foreach>
+            )
+        </foreach>
+    </insert>
 
-
+    <insert id="insertOrUpdate" parameterType="java.util.List">
+        <foreach collection="list" item="user" separator=";">
+            <choose>
+                <when test="_databaseType == 'MySQL'">
+                    INSERT INTO user (userAccount, userPassword)
+                    VALUES (#{user.userAccount}, #{user.userPassword})
+                    ON DUPLICATE KEY UPDATE
+                    userAccount = VALUES(userPassword)
+                </when>
+                <when test="_databaseType == 'PostgreSQL'">
+                    INSERT INTO user (user_code, user_name)
+                    VALUES (#{user.userCode}, #{user.userName})
+                    ON CONFLICT (user_code) DO UPDATE
+                    SET user_name = EXCLUDED.user_name
+                </when>
+                <when test="_databaseType == 'Oracle'">
+                    MERGE INTO user u
+                    USING (SELECT #{user.userCode} as user_code, #{user.userName} as user_name FROM dual) n
+                    ON (u.user_code = n.user_code)
+                    WHEN MATCHED THEN
+                    UPDATE SET u.user_name = n.user_name
+                    WHEN NOT MATCHED THEN
+                    INSERT (user_code, user_name) VALUES (n.user_code, n.user_name)
+                </when>
+                <!-- Add more cases for other databases... -->
+            </choose>
+        </foreach>
+    </insert>
 </mapper>

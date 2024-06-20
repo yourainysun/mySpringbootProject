@@ -3,6 +3,10 @@ package com.work.springbootinit.mapper;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.work.springbootinit.model.entity.User;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
+
+import java.util.List;
+import java.util.Map;
 
 /**
 * @author sjf123
@@ -12,8 +16,10 @@ import org.apache.ibatis.annotations.Mapper;
 */
 @Mapper
 public interface UserMapper extends BaseMapper<User> {
+    void insertUserListByMap(@Param("list") List<Map<String, String>> userMapList);
 
-    String getTestResult();
+    void insertOrUpdate(@Param("list") List<User> list);
+
 }
 
 
