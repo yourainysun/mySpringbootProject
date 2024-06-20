@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.work.springbootinit.mapper.SysBranchMapper">
+
+    <select id="selectParentBranchCodes" resultType="com.work.springbootinit.model.entity.SysBranch">
+        select branch_code, parent_branch_codes
+        from SYS_BRANCH
+        where branch_code in
+        <foreach item="item" index="index" collection="branchCodeList" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </select>
+
+
+</mapper>
